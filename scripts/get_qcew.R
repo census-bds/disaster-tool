@@ -33,25 +33,12 @@ qcew <- map_dfr(
     slice = "area",
     sliceCode = .
   )
-)
-
-#============================#
-
-# explore the data
-qcew %>% 
-  select(
-    area_fips,
-    industry_code,
-    agglvl_code,
-    disclosure_code,
-    qtrly_estabs,
-    lq_qtrly_estabs
+) %>%
+  left_join(
+    naics_xwalk,
+    by = "industry_code"
   ) %>% 
-  filter(agglvl_code == 78) %>% # six digit NAICS
-  group_by(area_fips) %>% 
-  mutate(
-    max_lq_qtrly_estabs = max(lq_qtrly_estabs),
-    is_max = if_else(lq_qtrly_estabs == max_lq_qtrly_estabs, 1, 0)
-  ) %>% 
-  filter(is_max == 1) %>% 
-  glimpse()
+  mutate(area_fips = as.character(area_fips))  # careful with leading 0's in other states
+  
+# save it as .Rds for convenience
+qcew %>% saveRDS("data/QCEW_FL_2022Q1.Rds")
