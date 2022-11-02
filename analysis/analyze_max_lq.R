@@ -80,7 +80,7 @@ tmap_mode("view")
 max_lq %>%
   filter(variable == "lq_qtrly_estabs") %>% 
   left_join(
-    fl_geo %>% select(GEOID, geometry),
+    fl_geo %>% select(GEOID, NAME, geometry),
     by = c("area_fips" = "GEOID")
   ) %>% 
   st_as_sf() %>% 
@@ -88,4 +88,6 @@ max_lq %>%
     tm_borders() +
     tm_fill(
       col = "industry_title",
-      legend.show = FALSE)
+      legend.show = FALSE,
+      id = "NAME"
+    )
