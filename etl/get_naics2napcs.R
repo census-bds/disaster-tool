@@ -41,7 +41,7 @@ natl_econ_census <- getCensus(
 ) %>% 
   mutate(
     NAICS2017 = str_pad(NAICS2017, 6, side = "left", pad = "0"),
-    NAPCS2017 = str_pad(NAICS2017, 10, side = "left", pad = "0")
+    NAPCS2017 = as.character(NAICS2017)
   )
 
 st_econ_census <- getCensus(
@@ -53,13 +53,13 @@ st_econ_census <- getCensus(
 ) %>% 
   mutate(
     NAICS2017 = str_pad(NAICS2017, 6, side = "left", pad = "0"),
-    NAPCS2017 = str_pad(NAICS2017, 10, side = "left", pad = "0")
+    # NAPCS2017 = str_pad(NAICS2017, 10, side = "left", pad = "0")
   )
 
 
 # save for convenience
-st_econ_census %>% saveRDS("data/econ_census_napcsind_state_2017.Rds")
 natl_econ_census %>% saveRDS("data/econ_census_napcsind_natl_2017.Rds")
+st_econ_census %>% saveRDS("data/econ_census_napcsind_state_2017.Rds")
 
 #============================#
 # MAKE ALLOCATION FACTORS
@@ -68,10 +68,6 @@ natl_econ_census %>% saveRDS("data/econ_census_napcsind_natl_2017.Rds")
 # compute share of TVALLN in a given NAPCS for a given six-digit NAICS
 compute_naics2napcs <- function(df) {
   df %>% 
-    mutate(
-      NAICS2017 = str_pad(NAICS2017, 6, side = "left", pad = "0"),
-      NAPCS2017 = str_c(NAPCS2017) 
-    ) %>% 
     filter(str_starts(NAICS2017, "[1-9]")) %>% # get six-digit NAICS
     group_by(
       GEO_ID,
