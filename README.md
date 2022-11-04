@@ -2,6 +2,10 @@
 
 This project visualizes the dominant industries and products in areas affected by Hurricane Ian. We aim to provide a reusable pipeline that can be re-applied for other natural disasters.
 
+### Setup
+
+One data file is not available via API: download the 2017 NAPCS structure file from [here](https://www.census.gov/naics/napcs/?274456) to get 2017 NAPCS labels.
+
 ### Data sources
 
 **Quarterly Census of Employment and Wages (QCEW)**

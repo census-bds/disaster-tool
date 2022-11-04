@@ -10,6 +10,7 @@ libs <- c(
           "janitor",
           "here",
           "tidycensus",
+          "sf",
           "tmap"
 )
 invisible(suppressMessages(lapply(libs, library, character.only=TRUE)))
@@ -59,7 +60,7 @@ max_lq %>%
 
 # static map some LQ data on estabs
 max_lq %>%
-  filter(variable == "lq_qtrly_estabs") %>% 
+  filter(variable == "lq_avg_emp") %>% 
   left_join(
     fl_geo %>% select(GEOID, geometry),
     by = c("area_fips" = "GEOID")
@@ -67,7 +68,7 @@ max_lq %>%
   ggplot(
     aes(
       fill = industry_title,
-      alpha = log(max_value),
+      alpha = max_value,
       geometry = geometry
     )
   ) +
@@ -85,9 +86,9 @@ max_lq %>%
   ) %>% 
   st_as_sf() %>% 
   tm_shape() +
-    tm_borders() +
-    tm_fill(
-      col = "industry_title",
-      legend.show = FALSE,
-      id = "NAME"
-    )
+  tm_borders() +
+  tm_fill(
+    col = "industry_title",
+    legend.show = FALSE,
+    id = "NAME"
+  )
