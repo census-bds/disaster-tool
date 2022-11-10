@@ -9,7 +9,8 @@ libs <- c(
           "magrittr",
           "janitor",
           "here",
-          "tidycensus"
+          "tidycensus",
+          "readxl"
 )
 invisible(suppressMessages(lapply(libs, library, character.only=TRUE)))
 
@@ -38,9 +39,9 @@ get_max <- function(df, variable) {
       !!variable
     ) %>%
     filter(
-      own_code == 5,
-      agglvl_code == 78
-    ) %>% # six digit NAICS
+      own_code == 5, # all private jobs
+      agglvl_code == 78 # six digit NAICS
+    ) %>% 
     group_by(area_fips) %>%
     mutate(
       max_value = max(!!sym(variable)),
@@ -103,3 +104,20 @@ max_lq <- bind_rows(
 
 # save for convenience
 max_lq %>% saveRDS("data/max_lq_QCEW_FL_2022Q1.Rds")
+
+#============================#
+# TRY ABSOLUTE ESTAB NUMBERS
+#============================#
+
+# 6 suppressions out of 67 isn't bad...
+qcew %>% 
+  filter(agglvl_code == "78") %>% 
+  group_by(area_fips) %>% 
+  mutate(
+    max_value = max(qtrly_estabs),
+    is_max = if_else(max_value == qtrly_estabs, 1, 0)
+  ) %>%
+  ungroup() %>% 
+  filter(is_max == 1) %>% 
+  count(disclosure_code)
+  

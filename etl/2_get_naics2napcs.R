@@ -22,8 +22,7 @@ options(scipen = 999) # to eliminate scientific notation in hierarchal codes
 # GET DATA
 #============================#
 
-
-naics_xwalk <- read_csv("https://www.bls.gov/cew/classifications/industry/industry-titles-csv.csv")
+naics_xwalk <- readRDS("data/naics_2017_to_2022_concordance.Rds")
 
 napcs_xwalk <- readxl::read_xlsx(
   "data/2017_to_2022_NAPCS_Concordance_Final_08242022.xlsx",
@@ -53,7 +52,7 @@ st_econ_census <- getCensus(
 ) %>% 
   mutate(
     NAICS2017 = str_pad(NAICS2017, 6, side = "left", pad = "0"),
-    # NAPCS2017 = str_pad(NAICS2017, 10, side = "left", pad = "0")
+    NAPCS2017 = as.character(NAICS2017)
   )
 
 
@@ -81,8 +80,8 @@ compute_naics2napcs <- function(df) {
     ) %>% 
     ungroup() %>% 
     left_join(
-      naics_xwalk,
-      by = c("NAICS2017" = "industry_code")
+      naics_xwalk %>% distinct(x2017_naics_code, x2017_naics_title),
+      by = c("NAICS2017" = "x2017_naics_code")
     ) %>% 
     left_join(
       napcs_xwalk %>% 
@@ -96,7 +95,7 @@ compute_naics2napcs <- function(df) {
     select(
       GEO_ID,
       NAICS2017,
-      industry_title,
+      x2017_naics_title,
       NAPCS2017,
       NAPCS2017_description,
       everything()

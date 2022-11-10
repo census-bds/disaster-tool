@@ -30,7 +30,7 @@ fl_geo <- get_acs(
     -moe
   )
 
-# fl_geo %>% saveRDS("data/FL_county_geo.Rds")
+fl_geo %>% saveRDS("data/FL_county_geo.Rds")
 
 #============================#
 
