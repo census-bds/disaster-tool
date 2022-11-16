@@ -42,7 +42,8 @@ natl <- getCensus(
   key = census_key,
   vars = c("I_COMMODITY",
            "I_COMMODITY_SDESC",
-           "GEN_VAL_MO"
+           "GEN_VAL_MO",
+           "GEN_vAL_YR" # this doesn't work - why?
   ),
   time = "2022-09",
   COMM_LVL = "HS6",
@@ -70,6 +71,8 @@ raw_imports <- map_dfr(
 raw_imports %>% glimpse()
 raw_imports %>% saveRDS("data/imports_HS6_ports_2022-09.Rds")
 
+raw_imports <- readRDS("data/imports_HS6_ports_2022-09.Rds")
+
 
 ports_xwalk <- getCensus(
   name = "timeseries/intltrade/imports/porths",
@@ -88,25 +91,33 @@ fl_imports <- raw_imports %>%
 
 # what's the top commodity at FL ports?
 fl_imports %>% 
-  mutate(GEN_VAL_MO = as.numeric(GEN_VAL_MO)) %>% 
+  mutate(
+    GEN_VAL_MO = as.numeric(GEN_VAL_MO),
+    GEN_VAL_YR = as.numeric(GEN_VAL_YR),
+  ) %>% 
   group_by(
     I_COMMODITY,
     I_COMMODITY_SDESC
   ) %>% 
   summarize(
-    gen_val_mo = sum(GEN_VAL_MO)
+    gen_val_mo = sum(GEN_VAL_MO),
+    gen_val_yr = sum(GEN_VAL_YR),
   ) %>% 
   arrange(-gen_val_mo) %>% 
   head(10)
 
 fl_summary <- fl_imports %>% 
-  mutate(GEN_VAL_MO = as.numeric(GEN_VAL_MO)) %>% 
+  mutate(
+    GEN_VAL_MO = as.numeric(GEN_VAL_MO),
+    GEN_VAL_YR = as.numeric(GEN_VAL_YR),
+  )  %>% 
   group_by(
     I_COMMODITY,
     I_COMMODITY_SDESC
   ) %>% 
   summarize(
-    fl_gen_val_mo = sum(GEN_VAL_MO)
+    fl_gen_val_mo = sum(GEN_VAL_MO),
+    fl_gen_val_yr = sum(GEN_VAL_YR),
   ) %>% 
   ungroup()
 
@@ -116,5 +127,5 @@ fl_shares <- natl %>%
     fl_summary
   ) %>% 
   mutate(
-    fl_share = fl_gen_val_mo / as.numeric(GEN_VAL_MO)
+    fl_share_mo = fl_gen_val_mo / as.numeric(GEN_VAL_MO)
   )

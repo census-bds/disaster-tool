@@ -10,24 +10,19 @@ One data file is not available via API: download the 2017 NAPCS structure file f
 
 **Quarterly Census of Employment and Wages (QCEW)**
 
-QCEW is a BLS product derived from unemployment insurance administrative data. Coverage includes essentially all private jobs as well as many civilian federal jobs. Data are released quarterly; currently, the most recent vintage is 2022 Q1. Data are available at the county level, albeit with some suppressions.
+QCEW is a BLS data product derived from unemployment insurance administrative data. Coverage includes essentially all private jobs as well as many civilian federal jobs. Data are released quarterly; currently, the most recent vintage is 2022 Q1. Data are available at the county level, albeit with some suppressions.
 
-We use BLS-provided location quotients for the number of establishments and total quarterly wages by six-digit NAICS industry. BLS also provides location quotients for employment within a six-digit NAICS for each month within the quarter; we average these. 
+We use BLS-provided counts for the number of establishments by six-digit NAICS industry for all private jobs. 
 
-##### Outstanding questions
-- which measure correlates best with product code crosswalk?
-- take the top X (5?) industries by concentration within a region provided they are above a cutoff of, e.g., 4X concentration. 
-- when to include related industries that don't quite make it?
+**Economic Census (EC)**
 
-##### Extensions:
-- Getis-Ord or other spatial modeling approach
-- sensitivity analysis:
-  - add/subtract to the raw values
-  - consider the size of the base generally
+The Economic Census is a survey-based data product that provides a wide range of estimates about U.S. businesses. We use this data source to understand which products are most significant in different NAICS sectors. 
 
-### Sources
+Within a six-digit NAICS, EC publishes the total value of sales, shipments, or revenue by NAPCS-based product/service code. These data are available at the state level for a small number of industries, but coverage is poor enough that we use the national estimates for all geographies.
 
-- https://www.federalreserve.gov/econres/ifdp/files/ifdp1329.pdf
+Outstanding questions:
+- why isn't the data from the FTP site available via the API?
+- how to think about suppression
 
 ##### Notes from 2017 Econ Census table
 
@@ -108,12 +103,19 @@ To comply with disclosure avoidance guidelines, data rows with fewer than three 
 
 Symbols:
 D - Withheld to avoid disclosing data for individual companies; data are included in higher level totals
+
 N - Not available or not comparable
+
 S - Estimate does not meet publication standards because of high sampling variability, poor response quality, or other concerns about the estimate quality. Unpublished estimates derived from this table by subtraction are subject to these same limitations and should not be attributed to the U.S. Census Bureau. For a description of publication standards and the total quantity response rate, see link to program methodology page.
+
 X - Not applicable
+
 A - Relative standard error of 100% or more
+
 r - Revised
+
 s - Relative standard error exceeds 40%
+
 For a complete list of symbols, see Economic Census: Technical Documentation: Data Dictionary.
 
 Source:
