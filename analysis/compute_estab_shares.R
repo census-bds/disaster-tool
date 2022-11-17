@@ -1,5 +1,4 @@
-
-# load Florida geography#==========================================================#
+#==========================================================#
 # COMPUTE ESTAB SHARES 
 # Cecile Murray
 # 2022-11-07
@@ -19,6 +18,9 @@ invisible(suppressMessages(lapply(libs, library, character.only=TRUE)))
 natl_qcew <- readRDS("data/QCEW_US_2022Q1.Rds") 
 fl_qcew <- readRDS("data/QCEW_FLST_2022Q1.Rds")
 county_qcew <- readRDS("data/QCEW_FL_2022Q1.Rds")
+
+naics2napcs <- readRDS("data/natl_six_digit_EC1700NAPCSINDPRD.Rds") %>% 
+  filter(NAPCS2017 != "0000000000") 
 
 naics_xwalk <- readRDS("data/naics_2017_to_2022_concordance.Rds")
 
@@ -98,9 +100,6 @@ fl_estab_total$qtrly_estabs / natl_estab_total$qtrly_estabs # 7.6%
 
 #============================#
 # what if I then tried to link to products (ranking)?
-
-naics2napcs <- readRDS("data/natl_six_digit_EC1700NAPCSINDPRD.Rds") %>% 
-  filter(NAPCS2017 != "0000000000") 
 
 # rank industries in disaster zone by % of national estabs, then find top 3 products 
 area_a_estab_share %>% 

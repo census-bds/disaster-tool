@@ -1,10 +1,13 @@
-## Exploring Hurricane Ian's potential impact on thee supply chain
+## Exploring Hurricane Ian's potential impact on the supply chain
 
 This project visualizes the dominant industries and products in areas affected by Hurricane Ian. We aim to provide a reusable pipeline that can be re-applied for other natural disasters.
 
 ### Setup
 
-One data file is not available via API: download the 2017 NAPCS structure file from [here](https://www.census.gov/naics/napcs/?274456) to get 2017 NAPCS labels.
+- Clone repo.
+- Install R package dependencies (**TK**)
+- Download the 2017 NAPCS structure file from [here](https://www.census.gov/naics/napcs/?274456) to get 2017 NAPCS labels.
+- Download [this file](https://www2.census.gov/programs-surveys/economic-census/data/2017/sector00) from the Census FTP site for the Econ Census-derived NAICS-NAPCS crosswalk.
 
 ### Data sources
 
@@ -20,6 +23,9 @@ The Economic Census is a survey-based data product that provides a wide range of
 
 Within a six-digit NAICS, EC publishes the total value of sales, shipments, or revenue by NAPCS-based product/service code. These data are available at the state level for a small number of industries, but coverage is poor enough that we use the national estimates for all geographies.
 
+Table ID:EC1700NAPCSINDPRD
+Dataset:ECNNAPCSIND2017
+
 Outstanding questions:
 - why isn't the data from the FTP site available via the API?
 - how to think about suppression
@@ -29,13 +35,6 @@ Outstanding questions:
 All Sectors: Industry by Products for the U.S. and States: 2017
 Survey/Program:Economic Census
 Year:2017
-Table ID:EC1700NAPCSINDPRD
-Dataset:ECNNAPCSIND2017
-
-Release Date: 2020-11-19
-
-Release Schedule:
-The data in this file are based on the 2017 Economic Census. For information about economic census planned data product releases, see Economic Census: About: 2017 Release Schedules.
 
 Key Table Information:
 Includes only establishments of firms with payroll.
@@ -66,16 +65,16 @@ Sector (6-digit NAICS level)		Percent of total broad product sales, value of shi
 81 		0.4% 
 
 Data Items and Other Identifying Records:
-Number of establishments
-Total sales, value of shipments, or revenue of establishments with the NAPCS collection code ($1,000)
-Quantity produced for the NAPCS collection code (sectors 21 and 31-33 only)
-Quantity shipped for the NAPCS collection code (sectors 21 and 31-33 only)
-Sales, value of shipments, or revenue of NAPCS collection code ($1,000)
-NAPCS collection code sales, value of shipments, or revenue as % of industry sales, value of shipments, or revenue (%)
-NAPCS collection code sales, value of shipments, or revenue as % of total sales, value of shipments, or revenue of establishments with the NAPCS collection code (%)
-Number of establishments with NAPCS collection code as % of industry establishments (%)
-Range indicating percent of total NAPCS collection code sales, value of shipments, or revenue imputed
-Relative standard error of NAPCS collection code sales, value of shipments, or revenue (%)
+- Number of establishments
+- Total sales, value of shipments, or revenue of establishments with the NAPCS collection code ($1,000)
+- Quantity produced for the NAPCS collection code (sectors 21 and 31-33 only)
+- Quantity shipped for the NAPCS collection code (sectors 21 and 31-33 only)
+- Sales, value of shipments, or revenue of NAPCS collection code ($1,000)
+- NAPCS collection code sales, value of shipments, or revenue as % of industry sales, value of shipments, or revenue (%)
+- NAPCS collection code sales, value of shipments, or revenue as % of total sales, value of shipments, or revenue of establishments with the NAPCS collection code (%)
+- Number of establishments with NAPCS collection code as % of industry establishments (%)
+- Range indicating percent of total NAPCS collection code sales, value of shipments, or revenue imputed
+- Relative standard error of NAPCS collection code sales, value of shipments, or revenue (%)
 
 Each record includes a code which represents various types of products produced or carried, or services rendered, by an establishment.
 
@@ -90,16 +89,6 @@ The data are shown at the 2- through 6-digit 2017 NAICS code levels for all NAIC
 Footnotes:
 Transportation and Warehousing (48-49): footnote 106- Railroad transportation and U.S. Postal Service are out of scope.
 
-FTP Download:
-Download the entire table at: https://www2.census.gov/programs-surveys/economic-census/data/2017/sector00
-
-API Information:
-Economic census data are housed in the Census Bureau API. For more information, see Explore Data: Developers: Available APIs: Economic Census.
-
-Methodology:
-To maintain confidentiality, the U.S. Census Bureau suppresses data to protect the identity of any business or individual. The census results in this file contain sampling and/or nonsampling error. Data users who create their own estimates using data from this file should cite the U.S. Census Bureau as the source of the original data only.
-
-To comply with disclosure avoidance guidelines, data rows with fewer than three contributing establishments are not presented. Additionally, establishment counts are suppressed when other select statistics in the same row are suppressed. For detailed information about the methods used to collect and produce statistics, including sampling, eligibility, questions, data collection and processing, data quality, review, weighting, estimation, coding operations, confidentiality protection, sampling error, nonsampling error, and more, see Economic Census: Technical Documentation: Methodology.
 
 Symbols:
 D - Withheld to avoid disclosing data for individual companies; data are included in higher level totals
@@ -117,19 +106,6 @@ r - Revised
 s - Relative standard error exceeds 40%
 
 For a complete list of symbols, see Economic Census: Technical Documentation: Data Dictionary.
-
-Source:
-U.S. Census Bureau, 2017 Economic Census
-For information about the economic census, see Business and Economy: Economic Census.
-
-Contact Information:
-U.S. Census Bureau
-For general inquiries:
- (800) 242-2184/ (301) 763-5154
- ewd.outreach@census.gov
-For specific data questions:
- (800) 541-8345
-For additional contacts, see Economic Census: About: Contact Us.
 
 
 ### Other reading 

@@ -13,8 +13,6 @@ libs <- c(
 )
 invisible(suppressMessages(lapply(libs, library, character.only=TRUE)))
 
-# qcew <- readRDS("data/QCEW_FL_2022Q1.Rds")
-
 # load 2017 to 2022 NAICS concordance file
 naics_concordance <- read_excel(
   "data/2017_to_2022_NAICS.xlsx",
@@ -29,17 +27,18 @@ naics_concordance <- read_excel(
 # ANALYSIS, TO CHECK
 #============================#
 
-# how many six-digit NAICS were condensed between 2017 and 2022? 
-condensed_naics <- naics_concordance %>% 
-  count(x2022_naics_code) %>% 
-  filter(n > 1) # 79
+# # how many six-digit NAICS were condensed between 2017 and 2022? 
+# condensed_naics <- naics_concordance %>% 
+#   count(x2022_naics_code) %>% 
+#   filter(n > 1) # 79
+# 
+# # what sectors?
+# condensed_naics %>% 
+#   mutate(sector = str_sub(x2022_naics_code, 1, 2)) %>% 
+#   count(sector)
+# # mostly retail
 
-# what sectors?
-condensed_naics %>% 
-  mutate(sector = str_sub(x2022_naics_code, 1, 2)) %>% 
-  count(sector)
-# mostly retail
-
+# qcew <- readRDS("data/QCEW_FL_2022Q1.Rds")
 
 # qcew_converted <- qcew %>% 
 # left_join(
