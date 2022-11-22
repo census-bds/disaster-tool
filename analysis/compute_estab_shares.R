@@ -42,12 +42,15 @@ estab_data <- county_qcew %>%
     suffix = c("", "_natl")
   ) %>% 
   mutate(
-    estab_share = qtrly_estabs / qtrly_estabs_natl
+    estab_share = (qtrly_estabs / qtrly_estabs_natl) * 100
   ) %>% 
   left_join(
     naics_xwalk %>% distinct(x2022_naics_code, x2022_naics_title),
     by = c("industry_code" = "x2022_naics_code")
   )
+
+# export to tableau
+estab_data %>% write_csv("tableau/FL_county_estab_shares.csv")
 
 # then let's say you wanted to combine for area A
 area_a_estab_share <- county_qcew %>% 

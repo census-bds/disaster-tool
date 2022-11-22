@@ -30,7 +30,11 @@ fl_geo <- get_acs(
     -moe
   )
 
+# for use within R
 fl_geo %>% saveRDS("data/FL_county_geo.Rds")
+
+# for use in Tableau
+fl_geo %>% sf::st_write("data/FL_county.shp")
 
 #============================#
 
@@ -78,3 +82,11 @@ fema_disaster_a <- map_dfr(
   )
 
 fema_disaster_a %>% saveRDS("data/FEMA_affected_fips_A.Rds")  
+
+#============================#
+# MAKE .shp FILE FOR TABLEAU
+#============================#
+
+fl_geo %>% 
+  mutate(disaster_a = if_else(GEOID %in% fema_disaster_a$area_fips, 1, 0)) %>% 
+  sf::st_write("data/FL_geo_with_disaster.shp")
