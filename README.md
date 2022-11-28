@@ -4,7 +4,7 @@ This project visualizes the dominant industries and products in areas affected b
 
 ### Tableau views
 
-1. Map: county level map 
+1. Affected county map
    - show affected areas in orange
    - tooltip has county name, name of industry w/largest share of national estabs, numeric share as percent
    - action: click on county and go to bar chart 2 for that county
@@ -16,10 +16,13 @@ This project visualizes the dominant industries and products in areas affected b
   - height of the bar is the share of establishments in this industry in this geographic area out of all establishments in this industry
   - bars are ranked in descending order and cut off at 10
   - action: click on the bar and go to products list
+  - action: click on ??? and show top counties nationally 
 
 3. products list (?): top products associated with a given NAICS 
   - based on 2017 EC data on total value, what are the top 3-5 products produced in this NAICS?
   - should there be a way to show multiple industries? Don't want to deal with ranking across industries (e.g. show 3 total products for 2 NAICS, the top product from each plus whichever second ranked is larger).
+  
+4. Map showing top counties for selected industry
   
 4. Imports map
   - show the ports on a map, colored orange if located in affected county

@@ -22,7 +22,7 @@ options(scipen = 999) # to eliminate scientific notation in hierarchal codes
 # GET DATA
 #============================#
 
-naics_xwalk <- readRDS("data/naics_2017_to_2022_concordance.Rds")
+naics_xwalk <- read_csv("data/bls_naics6_titles.csv")
 
 napcs_xwalk <- readxl::read_xlsx(
   "data/2017_to_2022_NAPCS_Concordance_Final_08242022.xlsx",
@@ -31,34 +31,10 @@ napcs_xwalk <- readxl::read_xlsx(
 ) %>% 
   clean_names()
 
-natl_econ_census <- getCensus(
-  name = "ecnnapcsind",
-  vars = c("GEO_ID", "NAICS2017", "NAPCS2017", "TVALLN"),
-  region = "us:*",
-  vintage = 2017,
-  key = census_key
-) %>% 
-  mutate(
-    NAICS2017 = str_pad(NAICS2017, 6, side = "left", pad = "0"),
-    NAPCS2017 = as.character(NAICS2017)
-  )
+natl_econ_census <- read_delim("data/EC1700NAPCSINDPRD.dat")
 
-st_econ_census <- getCensus(
-  name = "ecnnapcsind",
-  vars = c("GEO_ID", "NAICS2017", "NAPCS2017", "TVALLN"),
-  region = "state:*",
-  vintage = 2017,
-  key = census_key
-) %>% 
-  mutate(
-    NAICS2017 = str_pad(NAICS2017, 6, side = "left", pad = "0"),
-    NAPCS2017 = as.character(NAICS2017)
-  )
-
-
-# save for convenience
-natl_econ_census %>% saveRDS("data/econ_census_napcsind_natl_2017.Rds")
-st_econ_census %>% saveRDS("data/econ_census_napcsind_state_2017.Rds")
+# # save for convenience
+# natl_econ_census %>% saveRDS("data/econ_census_napcsind_natl_2017.Rds")
 
 #============================#
 # MAKE ALLOCATION FACTORS

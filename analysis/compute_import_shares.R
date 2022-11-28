@@ -18,12 +18,13 @@ lapply(libs, library, character.only = TRUE)
 # input file paths
 NATL_HS6_FILE <- "data/imports_HS6_natl_2022-09.Rds"
 PORTS_HS6_FILE <- "data/imports_HS6_ports_2022-09.Rds"
-PORT_XWALK_FILE <- "data/major_port_county_xwalk.Rds"
+PORT_NAMES_FILE <- "tableau/imports_port_names.csv"
+PORT_SHARES_PATH <- "tableau/import_port_share.csv"
 
 # read in data
 natl_imports <- readRDS(NATL_HS6_FILE)
 raw_imports <- readRDS(PORTS_HS6_FILE)
-ports_xwalk <- readRDS(PORT_XWALK_FILE)
+ports_xwalk <- read_csv(PORT_NAMES_FILE)
 
 
 # ANALYSIS   =============================#
@@ -83,7 +84,7 @@ natl_imports %>%
 
 port_shares <- raw_imports %>% 
   left_join(
-    natl_imports,
+    natl,
     suffix = c("_port", ""),
     by = c(
       "I_COMMODITY",
@@ -93,7 +94,7 @@ port_shares <- raw_imports %>%
     )
   ) %>%
   left_join(
-    ports_xwalk,
+    ports_xwalk %>% select(-GEN_VAL_YR),
     by = "PORT"
   ) %>% 
   mutate_at(
@@ -137,3 +138,25 @@ natl_imports %>%
     aes(x = as.numeric(GEN_VAL_YR))
   ) +
   geom_freqpoly(binwidth = 500000)
+
+
+# export for tableau
+port_shares %>% 
+  filter(PORT != "-") %>%
+  select(
+    PORT,
+    PORT_NAME,
+    CITY,
+    STATE,
+    I_COMMODITY,
+    I_COMMODITY_SDESC,
+    contains("GEN_VAL"),
+    contains("_share_")
+  ) %>%
+  group_by(PORT) %>% 
+  mutate(
+    max_share_year = if_else(max(port_share_yr) == port_share_yr, 1, 0),
+    max_share_mo = if_else(max(port_share_mo) == port_share_mo, 1, 0),
+  ) %>% 
+  filter(max_share_year == 1) %>% 
+  write_csv("tableau/imports_max_share_year.csv")
