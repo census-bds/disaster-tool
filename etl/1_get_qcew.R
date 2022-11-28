@@ -48,6 +48,33 @@ fl_qcew <- qcew_api(
 )
 
 
+get_qcew <- function(area_fips) {
+  out <- tryCatch(
+    {
+      qcew_api(
+        year = 2022,
+        quarter = 1,
+        slice = "area",
+        sliceCode = area_fips
+      )
+    },
+    error=function(cond) {
+      message("Error in API call for FIPS:", area_fips)
+      message(cond)
+      # Choose a return value in case of error
+      return(NA)
+    },
+    warning=function(cond) {
+      message(paste("API call caused a warning:", area_fips))
+      message("Here's the warning message:")
+      message(cond)
+      # Choose a return value in case of warning
+      return(NA)
+    }
+  )
+}
+
+
 # make API calls for all FL counties and bind in long DF
 county_qcew <- map_dfr(
   county_fips$area_fips,

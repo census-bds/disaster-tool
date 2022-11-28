@@ -46,6 +46,7 @@ port_in_cty <- st_join(ports_shp, cty)
 port_cty_df <- port_in_cty %>% 
   select(
     PORT, 
+    PORT_NAME,
     RANK,
     GEOID,
     STATEFP,

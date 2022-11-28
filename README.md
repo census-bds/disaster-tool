@@ -2,6 +2,31 @@
 
 This project visualizes the dominant industries and products in areas affected by Hurricane Ian. We aim to provide a reusable pipeline that can be re-applied for other natural disasters.
 
+### Tableau views
+
+1. Map: county level map 
+   - show affected areas in orange
+   - tooltip has county name, name of industry w/largest share of national estabs, numeric share as percent
+   - action: click on county and go to bar chart 2 for that county
+   - action: click somewhere and go to bar chart 2 for affected area 
+   - action: select a group of counties and go to bar chart 2 for selected
+
+2. Bar chart: share of national establishments within NAICS, top 10
+  - each bar represents a NAICS
+  - height of the bar is the share of establishments in this industry in this geographic area out of all establishments in this industry
+  - bars are ranked in descending order and cut off at 10
+  - action: click on the bar and go to products list
+
+3. products list (?): top products associated with a given NAICS 
+  - based on 2017 EC data on total value, what are the top 3-5 products produced in this NAICS?
+  - should there be a way to show multiple industries? Don't want to deal with ranking across industries (e.g. show 3 total products for 2 NAICS, the top product from each plus whichever second ranked is larger).
+  
+4. Imports map
+  - show the ports on a map, colored orange if located in affected county
+  - tooltip gives you name and top import by value and by national share(?)
+  
+  
+
 ### Setup
 
 - Clone repo.
@@ -29,6 +54,15 @@ Dataset:ECNNAPCSIND2017
 Outstanding questions:
 - why isn't the data from the FTP site available via the API?
 - how to think about suppression
+
+**Foreign Trade Imports**
+
+This data source provides monthly data on the value of shipments of detailed commodities imported into US ports. In cases where a disaster affects or damages port operations, these data can indicate which commodities might be affected.
+
+Outstanding questions:
+- this data source displays nulls as 0, so... do we leave it as 0? 
+- what is the right time period to look at? Look at most recent month, year to date, or this month last year?
+
 
 ##### Notes from 2017 Econ Census table
 

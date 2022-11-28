@@ -74,8 +74,7 @@ natl_imports %>%
   mutate_at(
     vars(contains("GEN_VAL")),
     ~ as.numeric(.)
-  ) %>% 
-  View()
+  ) 
 
 # PRODUCE STATISTICS FOR TABLEAU  =============================#
 
@@ -92,19 +91,49 @@ port_shares <- raw_imports %>%
       "I_COMMODITY_1",
       "time"
     )
+  ) %>%
+  left_join(
+    ports_xwalk,
+    by = "PORT"
+  ) %>% 
+  mutate_at(
+    vars(contains("GEN_VAL")),
+    ~ as.numeric(.)
   ) %>% 
   mutate(
-    port_share_mo = as.numeric(GEN_VAL_MO_port) / as.numeric(GEN_VAL_MO) * 100,
-    port_share_yr = as.numeric(GEN_VAL_YR_port) / as.numeric(GEN_VAL_YR) * 100,
-  )
+    port_share_mo = GEN_VAL_MO_port / GEN_VAL_MO * 100,
+    port_share_yr = GEN_VAL_YR_port / GEN_VAL_YR * 100,
+  ) 
 
 port_shares %>% 
   filter(PORT != "-") %>%
   select(
     PORT,
+    PORT_NAME,
     I_COMMODITY,
     I_COMMODITY_SDESC,
     contains("GEN_VAL"),
     contains("_share_")
   ) %>%
   View()
+
+# look at one county
+port_shares %>% 
+  filter(PORT == "2704") %>% 
+  select(
+    PORT,
+    PORT_NAME,
+    I_COMMODITY,
+    I_COMMODITY_SDESC,
+    contains("GEN_VAL"),
+    contains("_share_") 
+  ) %>% 
+  filter(GEN_VAL_YR_port > 500000) %>% 
+  View()
+
+# thinking about cut point for total value.. natl viz
+natl_imports %>% 
+  ggplot(
+    aes(x = as.numeric(GEN_VAL_YR))
+  ) +
+  geom_freqpoly(binwidth = 500000)
