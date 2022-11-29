@@ -36,6 +36,22 @@ fl_geo %>% saveRDS("data/FL_county_geo.Rds")
 # for use in Tableau
 fl_geo %>% sf::st_write("data/FL_county.shp")
 
+# get geography from tidycensus
+cty_geo <- get_acs(
+  geography = "county",
+  variables = c("B19001_001"),
+  geometry = TRUE
+) %>% 
+  select(
+    -variable,
+    -estimate,
+    -moe
+  )
+
+# for use in Tableau
+cty_geo %>% sf::st_write("tableau/US_county.shp")
+
+
 #============================#
 
 # counties where individuals can apply for assistance (highest level?)
@@ -87,6 +103,6 @@ fema_disaster_a %>% saveRDS("data/FEMA_affected_fips_A.Rds")
 # MAKE .shp FILE FOR TABLEAU
 #============================#
 
-fl_geo %>% 
+cty_geo %>% 
   mutate(disaster_a = if_else(GEOID %in% fema_disaster_a$area_fips, 1, 0)) %>% 
-  sf::st_write("data/FL_geo_with_disaster.shp")
+  sf::st_write("data/US_county_with_disaster.shp")

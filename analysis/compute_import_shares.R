@@ -84,7 +84,7 @@ natl_imports %>%
 
 port_shares <- raw_imports %>% 
   left_join(
-    natl,
+    natl_imports,
     suffix = c("_port", ""),
     by = c(
       "I_COMMODITY",
@@ -120,7 +120,7 @@ port_shares %>%
 
 # look at one county
 port_shares %>% 
-  filter(PORT == "2704") %>% 
+  filter(PORT == "1801") %>% 
   select(
     PORT,
     PORT_NAME,
@@ -139,6 +139,7 @@ natl_imports %>%
   ) +
   geom_freqpoly(binwidth = 500000)
 
+quantile(as.numeric(natl_imports$GEN_VAL_YR), probs = c(0.05, 0.1))
 
 # export for tableau
 port_shares %>% 

@@ -22,7 +22,7 @@ county_qcew <- readRDS("data/QCEW_CTY_2022Q1.Rds")
 naics2napcs <- readRDS("data/natl_six_digit_EC1700NAPCSINDPRD.Rds") %>% 
   filter(NAPCS2017 != "0000000000") 
 
-naics_xwalk <- read_csv("data/bls_naics6_titles.csv", col_types = cols(.default = "c"))
+naics_xwalk <- read_csv("data/2022_NAICS_titles.csv", col_types = cols(.default = "c"))
 
 fl_geo <- readRDS("data/FL_county_geo.Rds")
 fema_disaster_a <- readRDS("data/FEMA_affected_fips_A.Rds")
@@ -52,7 +52,9 @@ estab_data <- county_qcew %>%
 # export to tableau
 estab_data %>% 
   filter(!industry_code == "999999") %>% # remove NAICS unclassified
-  write_csv("tableau/FL_county_estab_shares.csv")
+  write_csv("tableau/US_county_estab_shares.csv")
+
+#============================#
 
 # then let's say you wanted to combine for area A
 area_a_estab_share <- county_qcew %>% 

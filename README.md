@@ -18,9 +18,8 @@ This project visualizes the dominant industries and products in areas affected b
   - action: click on the bar and go to products list
   - action: click on ??? and show top counties nationally 
 
-3. products list (?): top products associated with a given NAICS 
-  - based on 2017 EC data on total value, what are the top 3-5 products produced in this NAICS?
-  - should there be a way to show multiple industries? Don't want to deal with ranking across industries (e.g. show 3 total products for 2 NAICS, the top product from each plus whichever second ranked is larger).
+3. products list: top products associated with a given NAICS 
+  - based on 2017 EC data on total estabs producing a product, what are the top 3-5 products produced in this NAICS?
   
 4. Map showing top counties for selected industry
   
@@ -62,9 +61,26 @@ Outstanding questions:
 
 This data source provides monthly data on the value of shipments of detailed commodities imported into US ports. In cases where a disaster affects or damages port operations, these data can indicate which commodities might be affected.
 
+Data reflect the release for the month of September 2022. 
+
 Outstanding questions:
 - this data source displays nulls as 0, so... do we leave it as 0? 
-- what is the right time period to look at? Look at most recent month, year to date, or this month last year?
+
+### Data gaps
+
+- There is no data source that provides geographically granular data with sufficient coverage about which industries produce which products. 
+
+- There isn't a ports shapefile.
+
+### Data cleaning choices + anomalies + outstanding questions
+
+1. Why is there more Econ Census data available from the FTP site than from the API? We have greater industry coverage in the file from the FTP site, so we use that.
+
+2. BLS QCEW NAICS may not match Census NAICS. BLS QCEW uses 2022 NAICS, while the 2017 Econ Census used 2017 NAICS. In addition, BLS sometimes specifies distinctions (e.g. residential vs non-residential/commercial) that are not present in the Econ Census data. Since we use establishment counts from BLS, we stick as closely to their taxonomy as possible.
+
+3. County coverage for BLS QCEW may be poor in states where there have been substantial county boundary changes. Alaska is one such state. We do not attempt to create a canonical list of county FIPS or to harmonize county geographies. We simply take what is available from the BLS QCEW API.
+
+4. In the imports API, the HS6 product code long description field contains some strange characters that prevented these descriptions from being parsed out of JSON. 
 
 
 ##### Notes from 2017 Econ Census table
