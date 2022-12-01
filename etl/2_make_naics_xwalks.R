@@ -14,16 +14,17 @@ libs <- c(
 )
 invisible(suppressMessages(lapply(libs, library, character.only=TRUE)))
 
-#============================#
-# DATA LOADING
-#============================#
 
-# input
+# input paths
 NAICS_CONCORDANCE_FILE <- "data/2017_to_2022_NAICS.xlsx"
 NATL_QCEW <- "data/QCEW_US_2022Q1.Rds"
 
-# output
+# output paths
 NAICS_TITLE_FILE <- "data/2022_NAICS_titles.csv"
+
+#============================#
+# DATA LOADING
+#============================#
 
 # load 2017 to 2022 NAICS concordance file
 naics_concordance <- read_excel(
@@ -58,7 +59,8 @@ bls_naics6 <- bls_naics %>%
     industry_title = str_remove(industry_title_full, "NAICS(\\d{2})? \\d{6} ")
   ) 
 
-# now, investigate why some QCEW NAICS didn't join to a label from the 
+# THE REST OF THIS SECTION DOCUMENTS THE NAICS LIST DECISION
+# investigate why some QCEW NAICS don't fully join to a label from the 
 # Census NAICS 2022 list
 
 # get distinct NAICS from QCEW data
@@ -67,26 +69,26 @@ target_naics <- natl_qcew %>%
   distinct(industry_code)
 
 # this tells me it's 999999 (unknown) and a lot of subsector 238 
-# looks like a lot of residential vs. non-residential... odd
+# looks like a lot of residential vs. non-residential... odd, but okay
 setdiff(target_naics$industry_code, naics_concordance$x2022_naics_code)
 
-# are these ones present in the BLS list? - yes!
+# are these ones present in the BLS list? - yes
 setdiff(
   setdiff(target_naics$industry_code, naics_concordance$x2022_naics_code),
   bls_naics6$industry_code
 )
 
-
 #============================#
 # COMBINE SOURCES
 #============================#
 
-# make data frame of just the missing 
+# make data frame of just the NAICS that don't join to Census NAICS list 
 naics_to_add <- bls_naics6 %>% 
   filter(
     industry_code %in% setdiff(target_naics$industry_code, naics_concordance$x2022_naics_code)
   )
 
+# add these missing NAICS to the Census list
 naics_df <- naics_concordance %>% 
   select(contains("x2022")) %>% 
   distinct() %>% 

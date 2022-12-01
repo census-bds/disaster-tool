@@ -1,5 +1,6 @@
 #==========================================================#
-# DEFINE COUNTY LISTS 
+# GET GEOGRAPHIC DATA AND SET AFFECTED LIST
+# Depends: Census API key + internet access
 # Cecile Murray
 # 2022-11-04
 #==========================================================#

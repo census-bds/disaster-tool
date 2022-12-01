@@ -1,16 +1,13 @@
 #===============================================================================#
 # COMPUTE IMPORT SHARES
-# Depends: etl/get_imports_data.R, etl/put_ports_in_county_geo.R
+# Depends: imports data
 # 2022-11-23
 # Cecile Murray
 #===============================================================================#
 
 libs <- c(
   "tidyverse",
-  "janitor",
-  "sf",
-  "tidycensus",
-  "tmap"
+  "janitor"
 )
 lapply(libs, library, character.only = TRUE)
 

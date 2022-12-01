@@ -1,5 +1,6 @@
 #==========================================================#
 # GET QCEW LQ DATA 
+# Depends: BLS API key + internet access
 # Cecile Murray
 # 2022-10-21
 #==========================================================#
@@ -15,7 +16,6 @@ libs <- c(
 invisible(suppressMessages(lapply(libs, library, character.only=TRUE)))
 
 bls_key <- Sys.getenv("BLS_KEY")
-census_key <- Sys.getenv("CENSUS_API_KEY")
 
 #============================#
 
@@ -71,8 +71,6 @@ county_qcew <- map_dfr(
     area_fips = str_pad(area_fips, width = 5, side = "left", pad = "0")
   )  
 
-# fix problem NAICS here?
-  
 # save it as .Rds for convenience
 natl_qcew %>% saveRDS("data/QCEW_US_2022Q1.Rds")
 fl_qcew %>% saveRDS("data/QCEW_FLST_2022Q1.Rds")

@@ -1,5 +1,25 @@
-data/
-tableau/
+# data files 
+*.csv
+*.dat
+*.Rds
+*.xls
+*.xlsx
+*.zip
+
+# shapefiles
+*.dbf
+*.prj
+*.shp
+*.shx
+
+# tableau
+*.hyper
+*.twb
+
+# plots
+*.png
+
+# MS word
 *.docx
 
 # History files

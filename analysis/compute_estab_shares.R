@@ -1,8 +1,13 @@
 #==========================================================#
 # COMPUTE ESTAB SHARES 
+# Depends: QCEW data, county geo files
 # Cecile Murray
-# 2022-11-07
+# 2022-12-01
+
+# This script takes all the estab/product
 #==========================================================#
+
+
 
 libs <- c(
           "tidyverse",

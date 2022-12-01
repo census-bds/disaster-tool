@@ -1,6 +1,21 @@
-## Exploring Hurricane Ian's potential impact on the supply chain
+# Exploring Hurricane Ian's potential impact on the supply chain
 
-This project visualizes the dominant industries and products in areas affected by Hurricane Ian. We aim to provide a reusable pipeline that can be re-applied for other natural disasters.
+This project visualizes the dominant industries and products in areas affected by Hurricane Ian, based on information from the Bureau of Labor Statistics (BLS) Quarterly Census of Employment and Wages (QCEW) and the Census Bureau's Foreign Trade estimates. 
+
+We aim to provide a reusable pipeline that can be easily modified and re-run for natural disasters that occur in different geographic areas. We want to make it easier for users to find and explore data that are already published so they can more easily understand potential supply chain impacts. We use only public data and we avoid making derived estimates or model-like decisions, leaving those to user discretion. 
+  
+### Setup
+
+1. Clone repo.
+2. Install R package dependencies (**TK**)
+3. Register for API keys for Census and BLS.
+4. Download the 2017 NAPCS structure file from [here](https://www.census.gov/naics/napcs/?274456) to get 2017 NAPCS labels.
+5. ?? Download [this file](https://www2.census.gov/programs-surveys/economic-census/data/2017/sector00) from the Census FTP site for the Econ Census-derived NAICS-NAPCS crosswalk.
+
+### Getting the data
+
+- Run the scripts in the `etl/` subdirectory in the order indicated by their numbering. 
+- Data files needed for Tableau will be saved in the `tableau/` subdirectory.
 
 ### Tableau views
 
@@ -26,15 +41,6 @@ This project visualizes the dominant industries and products in areas affected b
 4. Imports map
   - show the ports on a map, colored orange if located in affected county
   - tooltip gives you name and top import by value and by national share(?)
-  
-  
-
-### Setup
-
-- Clone repo.
-- Install R package dependencies (**TK**)
-- Download the 2017 NAPCS structure file from [here](https://www.census.gov/naics/napcs/?274456) to get 2017 NAPCS labels.
-- Download [this file](https://www2.census.gov/programs-surveys/economic-census/data/2017/sector00) from the Census FTP site for the Econ Census-derived NAICS-NAPCS crosswalk.
 
 ### Data sources
 
@@ -159,8 +165,3 @@ r - Revised
 s - Relative standard error exceeds 40%
 
 For a complete list of symbols, see Economic Census: Technical Documentation: Data Dictionary.
-
-
-### Other reading 
-
-- https://arefiles.ucdavis.edu/uploads/filer_public/97/c2/97c2fab7-1d69-4754-b220-1aebe0fbe47f/cpc_uspc_working_paper.pdf
