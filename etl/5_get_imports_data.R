@@ -4,17 +4,18 @@
 # Cecile Murray
 # 2022-11-10
 #
-# This script exports three datasets:
+# This script does 4 things:
 # 1. National import totals by HS6 commodity
 # 2. Import totals by port by HS6 commodity
 # 3. Pull names of ports and cleans them so Tableau can 
 #    geocode them
+# 4. Compute % of national commodity coming through each 
+#    port 
 #==========================================================#
 
 libs <- c(
           "tidyverse",
           "magrittr",
-          "here",
           "censusapi"
 )
 invisible(suppressMessages(lapply(libs, library, character.only=TRUE)))
@@ -26,7 +27,7 @@ NATL_HS6_FILE <- "data/imports_HS6_natl_2022-09.Rds"
 PORTS_HS6_FILE <- "data/imports_HS6_ports_2022-09.Rds"
 
 # output for tableau
-PORT_NAMES_FILE <- "tableau/imports_port_names.csv"
+PORT_NAMES_FILE <- "tableau/imports_port_totals.csv"
 PORT_SHARES_PATH <- "tableau/import_port_share.csv"
 
 #============================#
@@ -75,7 +76,7 @@ raw_imports %>% saveRDS(PORTS_HS_FILE)
 #============================#
 # NAMES OF PORTS
 
-# port names because I didn't pull them in the 
+# port names and total value
 ports <- getCensus(
     name = "timeseries/intltrade/imports/porths",
     key = census_key,
@@ -102,12 +103,19 @@ ports %>%
 #============================#
 # STATISTICS FOR TABLEAU  
 
+# if needed, option to read data in instead of pulling from API if this
+# is a re-run
+# natl <- readRDS(NATL_HS6_FILE) 
+# raw_imports <- readRDS(PORTS_HS6_FILE)
+# ports <- read_csv(PORT_NAMES_FILE)
+ 
+
 # compute the share of products coming in through each port from national total 
 # in Sept and year to date
 
 port_shares <- raw_imports %>% 
   left_join(
-    natl_imports,
+    natl,
     suffix = c("_port", ""),
     by = c(
       "I_COMMODITY",
@@ -117,7 +125,7 @@ port_shares <- raw_imports %>%
     )
   ) %>%
   left_join(
-    ports_xwalk %>% select(-GEN_VAL_YR),
+    ports %>% select(-GEN_VAL_YR),
     by = "PORT"
   ) %>% 
   mutate_at(
@@ -142,10 +150,4 @@ port_shares %>%
     contains("GEN_VAL"),
     contains("_share_")
   ) %>%
-  group_by(PORT) %>% 
-  mutate(
-    max_share_year = if_else(max(port_share_yr) == port_share_yr, 1, 0),
-    max_share_mo = if_else(max(port_share_mo) == port_share_mo, 1, 0),
-  ) %>% 
-  filter(max_share_year == 1) %>% 
   write_csv(PORT_SHARES_PATH)

@@ -12,10 +12,7 @@
 libs <- c(
           "tidyverse",
           "magrittr",
-          "janitor",
-          "here",
-          "tidycensus",
-          "tmap"
+          "janitor"
 )
 invisible(suppressMessages(lapply(libs, library, character.only=TRUE)))
 
@@ -26,6 +23,8 @@ naics_xwalk <- read_csv("data/2022_NAICS_titles.csv", col_types = cols(.default 
 
 # output filepath
 INDUSTRY_DATA_FOR_TABLEAU <- "tableau/US_county_estab_shares.csv"
+
+#============================#
 
 # for each six-digit NAICS, compute the share of national estabs in each county 
 estab_data <- county_qcew %>% 

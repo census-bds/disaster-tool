@@ -1,6 +1,6 @@
 #==========================================================#
 # GET GEOGRAPHIC DATA AND SET AFFECTED LIST
-# Depends: Census API key + internet access
+# Depends: Census API key, internet, affected county csv
 # Cecile Murray
 # 2022-11-04
 #==========================================================#
@@ -9,12 +9,18 @@ libs <- c(
           "tidyverse",
           "magrittr",
           "janitor",
-          "here",
           "tidycensus"
 )
 invisible(suppressMessages(lapply(libs, library, character.only=TRUE)))
 
 census_key <- Sys.getenv("CENSUS_API_KEY")
+
+# needs to contain a list of disaster county names in a column named "county"
+# we expect a bare county name, without the " County" at the end
+AFFECTED_COUNTY_CSV <- "affected_counties.csv" 
+
+# output shapefile
+COUNTY_DISASTER_SHAPEFILE <- "tableau/US_county_with_disaster.shp"
 
 #============================#
 
@@ -49,54 +55,25 @@ cty_geo <- get_acs(
     -moe
   )
 
-# for use in Tableau
-cty_geo %>% sf::st_write("tableau/US_county.shp")
-
-
 #============================#
 
-# counties where individuals can apply for assistance (highest level?)
-fema_disaster_a_list <- tibble(
-  "county" = c(
-  "Brevard",
-  "Charlotte",
-  "Collier",
-  "DeSoto",
-  "Flagler",
-  "Glades",
-  "Hardee",
-  "Hendry",
-  "Highlands",
-  "Hillsborough",
-  "Lake",
-  "Lee",
-  "Manatee",
-  "Monroe",
-  "Okeechobee",
-  "Orange",
-  "Osceola",
-  "Palm Beach",
-  "Pasco",
-  "Pinellas",
-  "Polk",
-  "Putnam",
-  "Sarasota",
-  "Seminole",
-  "St. Johns",
-  "Volusia"
-)
-)
+affected_county_list <- read_csv(AFFECTED_COUNTY_CSV)
 
-fema_disaster_a <- map_dfr(
-  fema_disaster_a_list,
-  ~ str_c(., " County")
+# counties where individuals can apply for assistance
+fema_disaster_a <- affected_county_list %>%
+  mutate(
+    county = str_c(county, " County")
   ) %>% 
   left_join(
     fips_codes %>% 
-      filter(state == "FL") %>% 
       mutate(area_fips = str_c(state_code, county_code)),
-    by = "county"
+    by = c("county", "state")
   )
+
+# 1. make sure we have one row for each provided county
+# 2. make sure that every county now has a FIPS 
+assertthat::are_equal(nrow(fema_disaster_a), nrow(affected_county_list))
+assertthat::assert_that(length(which(is.na(fema_disaster_a$area_fips))) == 0)
 
 fema_disaster_a %>% saveRDS("data/FEMA_affected_fips_A.Rds")  
 
@@ -106,4 +83,4 @@ fema_disaster_a %>% saveRDS("data/FEMA_affected_fips_A.Rds")
 
 cty_geo %>% 
   mutate(disaster_a = if_else(GEOID %in% fema_disaster_a$area_fips, 1, 0)) %>% 
-  sf::st_write("data/US_county_with_disaster.shp")
+  sf::st_write(COUNTY_DISASTER_SHAPEFILE)

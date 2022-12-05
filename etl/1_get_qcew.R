@@ -9,7 +9,6 @@ libs <- c(
           "tidyverse",
           "magrittr",
           "janitor",
-          "here",
           "blscrapeR",
           "tidycensus"
 )
@@ -19,7 +18,7 @@ bls_key <- Sys.getenv("BLS_KEY")
 
 #============================#
 
-# construct list of all county FIPS
+# construct list of all county FIPS for BLS
 county_fips <- read_csv("https://www.bls.gov/cew/classifications/areas/area-titles-csv.csv") %>% 
   mutate(area_fips = str_pad(area_fips, width = 5, side = "left", pad = "0")) %>% 
   filter(
@@ -29,6 +28,9 @@ county_fips <- read_csv("https://www.bls.gov/cew/classifications/areas/area-titl
   ) 
 
 # method to call QCEW API for a given FIPS
+# BLS is serving csv files for each geography in a "slice" so we have to do
+# a repeated call to qcew_api() method
+# see https://data.bls.gov/cew/doc/access/csv_data_slices.htm
 get_qcew <- function(area_fips) {
   out <- tryCatch(
     {

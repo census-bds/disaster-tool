@@ -9,7 +9,6 @@ libs <- c(
           "tidyverse",
           "magrittr",
           "janitor",
-          "here",
           "readxl"
 )
 invisible(suppressMessages(lapply(libs, library, character.only=TRUE)))
@@ -63,20 +62,20 @@ bls_naics6 <- bls_naics %>%
 # investigate why some QCEW NAICS don't fully join to a label from the 
 # Census NAICS 2022 list
 
-# get distinct NAICS from QCEW data
-target_naics <- natl_qcew %>% 
-  filter(str_length(industry_code) == 6) %>% 
-  distinct(industry_code)
-
-# this tells me it's 999999 (unknown) and a lot of subsector 238 
-# looks like a lot of residential vs. non-residential... odd, but okay
-setdiff(target_naics$industry_code, naics_concordance$x2022_naics_code)
-
-# are these ones present in the BLS list? - yes
-setdiff(
-  setdiff(target_naics$industry_code, naics_concordance$x2022_naics_code),
-  bls_naics6$industry_code
-)
+# # get distinct NAICS from QCEW data
+# target_naics <- natl_qcew %>% 
+#   filter(str_length(industry_code) == 6) %>% 
+#   distinct(industry_code)
+# 
+# # this tells me it's 999999 (unknown) and a lot of subsector 238 
+# # looks like a lot of residential vs. non-residential... odd, but okay
+# setdiff(target_naics$industry_code, naics_concordance$x2022_naics_code)
+# 
+# # are these ones present in the BLS list? - yes
+# setdiff(
+#   setdiff(target_naics$industry_code, naics_concordance$x2022_naics_code),
+#   bls_naics6$industry_code
+# )
 
 #============================#
 # COMBINE SOURCES

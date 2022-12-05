@@ -7,48 +7,43 @@ We aim to provide a reusable pipeline that can be easily modified and re-run for
 ### Setup
 
 1. Clone repo.
-2. Install R package dependencies (**TK**)
-3. Register for API keys for Census and BLS.
-4. Download the 2017 NAPCS structure file from [here](https://www.census.gov/naics/napcs/?274456) to get 2017 NAPCS labels.
-5. ?? Download [this file](https://www2.census.gov/programs-surveys/economic-census/data/2017/sector00) from the Census FTP site for the Econ Census-derived NAICS-NAPCS crosswalk.
+2. Register for API keys for Census and BLS.
+3. Run `setup.R` to install R package dependencies and API keys.
 
-### Getting the data
+### Running the data pipeline 
 
-- Run the scripts in the `etl/` subdirectory in the order indicated by their numbering. 
-- Data files needed for Tableau will be saved in the `tableau/` subdirectory.
+1. If needed, update the list of counties specified in `affected_counties.csv`: the current list contains the counties eligible for FEMA's highest level of disaster assistance for Hurricane Ian. Counties should be listed with their name only, e.g. Miami-Dade County FL should be listed as Miami-Dade.
+2. Run the scripts in the `etl/` subdirectory in ascending order, beginning with 0.  
+3. The .csv and .shp files for Tableau will be saved in the `tableau/` subdirectory.
 
 ### Tableau views
 
 1. Affected county map
    - show affected areas in orange
-   - tooltip has county name, name of industry w/largest share of national estabs, numeric share as percent
    - action: click on county and go to bar chart 2 for that county
    - action: click somewhere and go to bar chart 2 for affected area 
-   - action: select a group of counties and go to bar chart 2 for selected
+   - TODO action: select a group of counties and go to bar chart 2 for selected
 
 2. Bar chart: share of national establishments within NAICS, top 10
   - each bar represents a NAICS
   - height of the bar is the share of establishments in this industry in this geographic area out of all establishments in this industry
   - bars are ranked in descending order and cut off at 10
   - action: click on the bar and go to products list
-  - action: click on ??? and show top counties nationally 
 
-3. products list: top products associated with a given NAICS 
+3 Bar chart: top products associated with a given NAICS, based on % of estabs producing those products 
   - based on 2017 EC data on total estabs producing a product, what are the top 3-5 products produced in this NAICS?
   
-4. Map showing top counties for selected industry
-  
 4. Imports map
-  - show the ports on a map, colored orange if located in affected county
-  - tooltip gives you name and top import by value and by national share(?)
+  - show the ports on a map, sized by total year to date value
+  - action: click to see top products in 
 
 ### Data sources
 
 **Quarterly Census of Employment and Wages (QCEW)**
 
-QCEW is a BLS data product derived from unemployment insurance administrative data. Coverage includes essentially all private jobs as well as many civilian federal jobs. Data are released quarterly; currently, the most recent vintage is 2022 Q1. Data are available at the county level, albeit with some suppressions.
+QCEW is a BLS data product derived from unemployment insurance administrative data. Coverage includes essentially all private jobs as well as many civilian federal jobs. Data are released quarterly; currently, the most recent vintage is 2022 Q1. Data are available at the county level, though small cell counts are suppressed.
 
-We use BLS-provided counts for the number of establishments by six-digit NAICS industry for all private jobs. 
+We use BLS-provided counts for the number of establishments by six-digit NAICS industry for all private jobs nationally and in each county.
 
 **Economic Census (EC)**
 
@@ -67,10 +62,10 @@ Outstanding questions:
 
 This data source provides monthly data on the value of shipments of detailed commodities imported into US ports. In cases where a disaster affects or damages port operations, these data can indicate which commodities might be affected.
 
-Data reflect the release for the month of September 2022. 
+Data reflect the release for the month of September 2022.
 
-Outstanding questions:
-- this data source displays nulls as 0, so... do we leave it as 0? 
+Outstanding question:
+- Is year to date the right measure given seasonal adjustments?
 
 ### Data gaps
 
