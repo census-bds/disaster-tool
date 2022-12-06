@@ -132,10 +132,20 @@ port_shares <- raw_imports %>%
     vars(contains("GEN_VAL")),
     ~ as.numeric(.)
   ) %>% 
+  # doing this if_else to handle 0 / 0
   mutate(
-    port_share_mo = GEN_VAL_MO_port / GEN_VAL_MO * 100,
-    port_share_yr = GEN_VAL_YR_port / GEN_VAL_YR * 100,
-  ) 
+    port_share_mo = if_else( 
+      GEN_VAL_MO_port == 0 & GEN_vAL_MO == 0,
+      0,
+      GEN_VAL_MO_port / GEN_VAL_MO * 100
+    ),
+    port_share_yr = if_else( 
+      GEN_VAL_YR_port == 0 & GEN_vAL_YR == 0,
+      0,
+      GEN_VAL_YR_port / GEN_VAL_YR * 100
+    )
+  )
+  
 
 # export for tableau
 port_shares %>% 

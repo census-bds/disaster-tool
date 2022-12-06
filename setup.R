@@ -14,7 +14,8 @@ package_list <- c(
   "censusapi",
   "blscrapeR",
   "readxl",
-  "tmap"
+  "tmap",
+  "assertthat"
 )
 
 # install them
