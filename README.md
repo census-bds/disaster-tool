@@ -13,16 +13,15 @@ We aim to provide a reusable pipeline that can be easily modified and re-run for
 ### Running the data pipeline 
 
 1. If needed, update the list of counties specified in `affected_counties.csv`: the current list contains the counties eligible for FEMA's highest level of disaster assistance for Hurricane Ian. Counties should be listed with their name only, e.g. Miami-Dade County FL should be listed as Miami-Dade.
-2. Run the scripts in the `etl/` subdirectory in ascending order, beginning with 0. Note that `6_tests.R` contains tests for invalid values *and* tests for key values in the final viz product.
+2. Run the scripts in the `etl/` subdirectory in ascending order, beginning with 0. Note that `6_tests.R` contains tests for invalid values *and* tests for key values in the final viz product, so this script would need to be modified for an alternative set of counties or updated data.
 3. The .csv and .shp files for Tableau will be saved in the `tableau/` subdirectory and can be used to build the dashboard.
 
 ### Tableau views
 
 1. Affected county map
    - show affected areas in orange
-   - action: click on county and go to bar chart 2 for that county
+   - action: click on county/group of counties and go to bar chart 2 for that county
    - action: click somewhere and go to bar chart 2 for affected area 
-   - TODO action: select a group of counties and go to bar chart 2 for selected
 
 2. Bar chart: share of national establishments within NAICS, top 10
   - each bar represents a NAICS
@@ -30,13 +29,13 @@ We aim to provide a reusable pipeline that can be easily modified and re-run for
   - bars are ranked in descending order and cut off at 10
   - action: click on the bar and go to products list
 
-3 Bar chart: top products associated with a given NAICS, based on % of estabs producing those products 
-  - based on 2017 EC data on total estabs producing a product, what are the top 3-5 products produced in this NAICS?
+3 Bar chart: top NAPCS products associated with a given NAICS, based on % of estabs producing those products 
+  - based on 2017 EC data on total estabs producing a product, what are the top 10 products produced in this NAICS?
   
 4. Imports map
   - show the ports on a map, sized by total year to date value
-  - action: click to see top products in 
-
+  - action: click to see top products in that port based on share of that commodity's total year to date import value.
+  
 ### Data sources
 
 **Quarterly Census of Employment and Wages (QCEW)**
