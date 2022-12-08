@@ -13,7 +13,7 @@ We aim to provide a reusable pipeline that can be easily modified and re-run for
 ### Running the data pipeline 
 
 1. If needed, update the list of counties specified in `affected_counties.csv`: the current list contains the counties eligible for FEMA's highest level of disaster assistance for Hurricane Ian. Counties should be listed with their name only, e.g. Miami-Dade County FL should be listed as Miami-Dade.
-2. Run the scripts in the `etl/` subdirectory in ascending order, beginning with 0. Note that `6_tests.R` contains tests for invalid values *and* tests for key values in the final viz product, so this script would need to be modified for an alternative set of counties or updated data.
+2. Run the scripts in the `etl/` subdirectory in ascending order, beginning with 0. Note that `7_tests.R` contains tests for invalid values *and* tests for key values in the final viz product, so this script would need to be modified for an alternative set of counties or updated data.
 3. The .csv and .shp files for Tableau will be saved in the `tableau/` subdirectory and can be used to build the dashboard.
 
 ### Tableau views

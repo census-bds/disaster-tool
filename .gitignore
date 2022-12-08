@@ -15,6 +15,7 @@
 # tableau
 *.hyper
 *.twb
+*.twbr
 
 # plots
 *.png

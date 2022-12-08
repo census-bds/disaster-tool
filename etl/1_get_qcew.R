@@ -16,6 +16,11 @@ invisible(suppressMessages(lapply(libs, library, character.only=TRUE)))
 
 bls_key <- Sys.getenv("BLS_KEY")
 
+# output files
+NATL_QCEW_FILE <- "data/QCEW_US_2022Q1.Rds"
+FL_QCEW_FILE <- "data/QCEW_FLST_2022Q1.Rds"
+CTY_QCEW_FILE <- "data/QCEW_CTY_2022Q1.Rds"
+
 #============================#
 
 # construct list of all county FIPS for BLS
@@ -74,6 +79,6 @@ county_qcew <- map_dfr(
   )  
 
 # save it as .Rds for convenience
-natl_qcew %>% saveRDS("data/QCEW_US_2022Q1.Rds")
-fl_qcew %>% saveRDS("data/QCEW_FLST_2022Q1.Rds")
-county_qcew %>% saveRDS("data/QCEW_CTY_2022Q1.Rds")
+natl_qcew %>% saveRDS(NATL_QCEW_FILE)
+fl_qcew %>% saveRDS(FL_QCEW_FILE)
+county_qcew %>% saveRDS(CTY_QCEW_FILE)

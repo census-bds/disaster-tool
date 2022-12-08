@@ -53,12 +53,39 @@ assert_that(sum(imports$port_share_yr < 0) == 0)
 assert_that(sum(imports$port_share_yr > 100) == 0)
 assert_that(length(which(is.na(imports$port_share_yr))) == 0)
 
+#============================#
+# COUNTY COVERAGE
+# is there a value for every county where there's supposed to be?
+
+# these are FIPS for counties that aren't present in the BLS QCEW list, 
+# mostly territories
+missing_fips <- c(
+  "15005", # Kalawao County HI: BLS QCEW contains in in Maui County 15009
+  "60010", # Eastern District, AS
+  "60020", # Manu'a District, AS
+  "60030", # Rose Atoll, AS
+  "60040", # Swain's Island, AS
+  "60050", # Western District, AS
+  "66010", # Guam
+  "69085", # Northern Islands Municipality, Northern Mariana Islands
+  "69100", # Rota Municipality, Northern Mariana Islands
+  "69110", # Saipain Municipality, Northern Mariana Islands
+  "69120" # Tinian Municipality, Northern Mariana Islands
+)
+
+# this says every county we get from BLS is covered in the shapefile
+assert_that(length(setdiff(estab$area_fips, cty$GEOID)) == 0)
+
+# this says the only counties in the shapefile where we don't have data from
+# BLS are the ones listed above
+assert_that(setequal(setdiff(cty$GEOID, estab$area_fips), missing_fips))
 
 #============================#
 # TEST ESTAB NUMBERS
 
 # there's rounding in this section because of floating point error
 # and because Tableau rounds and that's what I'm checking against
+
 
 # compute topline statistic about orange groves
 affected_orange_groves_estab_share <- estab_geo %>% 
