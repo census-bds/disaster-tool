@@ -24,6 +24,13 @@ AFFECTED_COUNTY_CSV <- "affected_counties.csv"
 COUNTY_DISASTER_SHAPEFILE <- "tableau/US_county_with_disaster.shp"
 
 #============================#
+# GET COUNTY SHAPEFILE
+
+# get geography from tigris
+cty_geo <- counties(cb = TRUE, year = "2021")
+
+
+#============================#
 
 # get geography from tidycensus
 fl_geo <- get_acs(
@@ -40,12 +47,6 @@ fl_geo <- get_acs(
 
 # for use within R
 fl_geo %>% saveRDS("data/FL_county_geo.Rds")
-
-# for use in Tableau
-fl_geo %>% sf::st_write("data/FL_county.shp")
-
-# get geography from tigris
-cty_geo <- counties(cb = TRUE, year = "2021")
 
 #============================#
 

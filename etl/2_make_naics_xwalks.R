@@ -18,8 +18,30 @@ invisible(suppressMessages(lapply(libs, library, character.only=TRUE)))
 NAICS_CONCORDANCE_FILE <- "data/2017_to_2022_NAICS.xlsx"
 NATL_QCEW <- "data/QCEW_US_2022Q1.Rds"
 
+# link to download NAICS concordance
+NAICS_URL <- "https://www.census.gov/naics/concordances/2022_to_2017_NAICS.xlsx"
+
 # output paths
 NAICS_TITLE_FILE <- "data/2022_NAICS_titles.csv"
+
+#============================#
+# DOWNLOAD NAICS CONCORDANCE
+#============================#
+
+return_code <- download.file(
+  url = NAICS_URL, 
+  destfile = NAICS_CONCORDANCE_FILE, 
+  method = "curl",
+  mode = "wb"
+) 
+
+# if we were successful, unzip
+if (return_code == 0) {
+  print("NAICS concordance download successful.")
+  # otherwise throw an error
+} else {
+  stop("NAICS concordance download was not successful.")
+}
 
 #============================#
 # DATA LOADING
@@ -61,21 +83,22 @@ bls_naics6 <- bls_naics %>%
 # THE REST OF THIS SECTION DOCUMENTS THE NAICS LIST DECISION
 # investigate why some QCEW NAICS don't fully join to a label from the 
 # Census NAICS 2022 list
+# natl_qcew <- readRDS("data/QCEW_US_2022Q1.Rds")
 
 # # get distinct NAICS from QCEW data
-# target_naics <- natl_qcew %>% 
-#   filter(str_length(industry_code) == 6) %>% 
-#   distinct(industry_code)
+target_naics <- natl_qcew %>%
+  filter(str_length(industry_code) == 6) %>%
+  distinct(industry_code)
 # 
 # # this tells me it's 999999 (unknown) and a lot of subsector 238 
 # # looks like a lot of residential vs. non-residential... odd, but okay
-# setdiff(target_naics$industry_code, naics_concordance$x2022_naics_code)
+setdiff(target_naics$industry_code, naics_concordance$x2022_naics_code)
 # 
 # # are these ones present in the BLS list? - yes
-# setdiff(
-#   setdiff(target_naics$industry_code, naics_concordance$x2022_naics_code),
-#   bls_naics6$industry_code
-# )
+setdiff(
+  setdiff(target_naics$industry_code, naics_concordance$x2022_naics_code),
+  bls_naics6$industry_code
+)
 
 #============================#
 # COMBINE SOURCES
