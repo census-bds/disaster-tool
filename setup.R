@@ -1,8 +1,16 @@
 #==========================================================#
-# SET UP PACKAGES AND API KEYS 
+# SET UP DIRECTORIES, PACKAGES, AND API KEYS 
 # Run me once!
 # 2022-12-02
 #==========================================================#
+
+print("making data/ and tableau/ subdirectories...")
+
+# these will warn if the directories already exist
+dir.create("data/")
+dir.create("tableau/")
+
+print("done making directories.")
 
 print("installing required packages...")
 
