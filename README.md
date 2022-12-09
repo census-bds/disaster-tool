@@ -35,6 +35,19 @@ We aim to provide a reusable pipeline that can be easily modified and re-run for
 4. Imports map
   - show the ports on a map, sized by total year to date value
   - action: click to see top products in that port based on share of that commodity's total year to date import value.
+
+### Data cleaning choices + anomalies + outstanding questions
+
+1. Why is there more Econ Census data available from the FTP site than from the API? We have greater industry coverage in the file from the FTP site, so we use that. 
+
+2. BLS QCEW NAICS may not match Census NAICS, especially in subsector 238. BLS QCEW uses 2022 NAICS, while the 2017 Econ Census used 2017 NAICS. In addition, BLS sometimes specifies distinctions (e.g. residential vs non-residential/commercial) that are not present in the Econ Census data. Since we use establishment counts from BLS, we stick as closely to their taxonomy as possible.
+
+3. We use the list of counties from BLS QCEW and the 2021 county shapefile from the Census Bureau TIGERline program. Notably, BLS QCEW combines two county equivalent geographies in Hawaii and does not include the US Virgin Islands, American Samoa, the Northern Mariana Islands, or Guam. 
+
+4. In the imports API, the HS6 product code long description field contains some strange characters that prevented these descriptions from being parsed out of JSON. Future work could address this.
+
+5. We do not have a shapefile or canonical geocoded address list for CBP ports. As an interim measure, we split the city and state in the port name and use Tableau to geocode those. There were about 100 ports we had to correct to get Tableau to recognize the location; we manually entered these
+
   
 ### Data sources
 
@@ -71,17 +84,6 @@ Outstanding question:
 - There is no data source that provides geographically granular data with sufficient coverage about which industries produce which products. 
 
 - There isn't a ports shapefile.
-
-### Data cleaning choices + anomalies + outstanding questions
-
-1. Why is there more Econ Census data available from the FTP site than from the API? We have greater industry coverage in the file from the FTP site, so we use that.
-
-2. BLS QCEW NAICS may not match Census NAICS. BLS QCEW uses 2022 NAICS, while the 2017 Econ Census used 2017 NAICS. In addition, BLS sometimes specifies distinctions (e.g. residential vs non-residential/commercial) that are not present in the Econ Census data. Since we use establishment counts from BLS, we stick as closely to their taxonomy as possible.
-
-3. County coverage for BLS QCEW may be poor in states where there have been substantial county boundary changes. Alaska is one such state. We do not attempt to create a canonical list of county FIPS or to harmonize county geographies. We simply take what is available from the BLS QCEW API.
-
-4. In the imports API, the HS6 product code long description field contains some strange characters that prevented these descriptions from being parsed out of JSON. 
-
 
 ##### Notes from 2017 Econ Census table
 
