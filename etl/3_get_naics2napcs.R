@@ -57,7 +57,10 @@ if (return_code == 0) {
 
 # load NAICS to NAPCS allocation factors
 naics2napcs <- read_delim(NATL_ECON_CENSUS_FILE) %>% 
-  filter(NAPCS2017 != "0000000000") # filter out total code
+  filter(
+    NAPCS2017 != "0000000000", # filter out total code
+    `#GEOTYPE` == "01"
+  )
 
 naics2napcs %>% 
   select(
