@@ -1,6 +1,6 @@
 #==========================================================#
 # GET GEOGRAPHIC DATA AND SET AFFECTED LIST
-# Depends: Census API key, internet, affected county csv
+# Depends: county shapefile for Tableau, affected county csv
 # Cecile Murray
 # 2022-11-04
 #==========================================================#
@@ -16,6 +16,9 @@ invisible(suppressMessages(lapply(libs, library, character.only=TRUE)))
 
 census_key <- Sys.getenv("CENSUS_API_KEY")
 
+# from Data Viz Hub sharepoint site
+BASE_COUNTY_SHAPEFILE <- "tableau/albers_cb_2021_us_county_20M.shp"
+
 # needs to contain a list of disaster county names in a column named "county"
 # we expect a bare county name, without the " County" at the end
 AFFECTED_COUNTY_CSV <- "affected_counties.csv" 
@@ -24,29 +27,30 @@ AFFECTED_COUNTY_CSV <- "affected_counties.csv"
 COUNTY_DISASTER_SHAPEFILE <- "tableau/US_county_with_disaster.shp"
 
 #============================#
-# GET COUNTY SHAPEFILE
+# READ IN COUNTY SHAPEFILE
 
-# get geography from tigris
-cty_geo <- counties(cb = TRUE, year = "2021")
+
+cty_geo <- sf::read_sf(BASE_COUNTY_SHAPEFILE)
 
 
 #============================#
+# FOR FL ONLY ANALYSIS
 
-# get geography from tidycensus
-fl_geo <- get_acs(
-  geography = "county",
-  variables = c("B19001_001"),
-  state = "12",
-  geometry = TRUE
-) %>% 
-  select(
-    -variable,
-    -estimate,
-    -moe
-  )
-
-# for use within R
-fl_geo %>% saveRDS("data/FL_county_geo.Rds")
+# # get geography from tidycensus
+# fl_geo <- get_acs(
+#   geography = "county",
+#   variables = c("B19001_001"),
+#   state = "12",
+#   geometry = TRUE
+# ) %>% 
+#   select(
+#     -variable,
+#     -estimate,
+#     -moe
+#   )
+# 
+# # for use within R
+# fl_geo %>% saveRDS("data/FL_county_geo.Rds")
 
 #============================#
 
