@@ -44,7 +44,7 @@ We aim to provide a reusable pipeline that can be easily modified and re-run for
 
 2. BLS QCEW NAICS may not match Census NAICS, especially in subsector 238. BLS QCEW uses 2022 NAICS, while the 2017 Econ Census used 2017 NAICS. In addition, BLS sometimes specifies distinctions (e.g. residential vs non-residential/commercial) that are not present in the Econ Census data. Since we use establishment counts from BLS, we stick as closely to their taxonomy as possible.
 
-3. We use the list of counties from BLS QCEW and the 2021 county shapefile from the Census Bureau TIGERline program. Notably, BLS QCEW combines two county equivalent geographies in Hawaii and does not include the US Virgin Islands, American Samoa, the Northern Mariana Islands, or Guam. 
+3. We use the list of counties from BLS QCEW and a custom shapefile from GEO division (2021 Albers projected counties with territories etc repositioned). External users could use the 2021 TIGER-line shapefile, as we did in a previous iteration. Notably, BLS QCEW combines two county equivalent geographies in Hawaii and does not include the US Virgin Islands, American Samoa, the Northern Mariana Islands, or Guam. 
 
 4. In the imports API, the HS6 product code long description field contains some strange characters that prevented these descriptions from being parsed out of JSON. Future work could address this.
 
