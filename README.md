@@ -8,7 +8,9 @@ We aim to provide a reusable pipeline that can be easily modified and re-run for
 
 1. Clone repo.
 2. Register for API keys for Census and BLS.
-3. Run `setup.R` to install R package dependencies and API keys.
+3. Open the project (.Rproj file) in RStudio to set working directories appropriately, or use `setwd()` instead.
+4. Run `setup.R` to install R package dependencies and API keys.
+5. If not using TIGER/LINE shapefile, save the appropriate shapefile in the `data/` directory. 
 
 ### Running the data pipeline 
 
